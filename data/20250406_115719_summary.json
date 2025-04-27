@@ -1,0 +1,61 @@
+{
+    "simulation_id": "20250406_115719",
+    "num_plants": 1,
+    "total_days": 100,
+    "phases": {
+        "germination": {
+            "days": 10,
+            "avg_temperature": 17.0,
+            "avg_ventilation": 1.6,
+            "avg_irrigation": 70.3,
+            "avg_light_hours": 13.0,
+            "errors": 0
+        },
+        "growth": {
+            "days": 50,
+            "avg_temperature": 19.7,
+            "avg_ventilation": 2.4,
+            "avg_irrigation": 144.0,
+            "avg_light_hours": 14.9,
+            "errors": 9
+        },
+        "flowering": {
+            "days": 15,
+            "avg_temperature": 21.9,
+            "avg_ventilation": 3.6,
+            "avg_irrigation": 195.4,
+            "avg_light_hours": 14.0,
+            "errors": 0
+        },
+        "ripening": {
+            "days": 25,
+            "avg_temperature": 19.5,
+            "avg_ventilation": 2.6,
+            "avg_irrigation": 154.6,
+            "avg_light_hours": 13.1,
+            "errors": 2
+        }
+    },
+    "plants": {
+        "plant1": {
+            "final_height": 72.9,
+            "final_root_length": 73.4,
+            "final_flowers": 25,
+            "final_appearance": 8.7,
+            "growth_rate": {
+                "height": 0.73,
+                "root": 0.73,
+                "flowers": 0.25
+            }
+        }
+    },
+    "errors": {
+        "total": 11,
+        "by_type": {
+            "temperature": 3,
+            "ventilation": 3,
+            "irrigation": 3,
+            "light_hours": 2
+        }
+    }
+}
