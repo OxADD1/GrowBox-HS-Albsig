@@ -1,7 +1,9 @@
-import paho.mqtt.client as mqtt
 import json
 import time
 import threading
+
+import paho.mqtt.client as mqtt
+from paho.mqtt.enums import CallbackAPIVersion
 
 class MQTTController:
     """Handles MQTT communication between laptop and grow box controller"""
@@ -12,7 +14,13 @@ class MQTTController:
         self.port = port
         self.client_id = client_id
         self.topic_prefix = "greenhouse/"
-        self.client = mqtt.Client(client_id)
+
+        # Use the old Callback API (v1) for compatibility
+        self.client = mqtt.Client(
+            client_id=client_id,
+            callback_api_version=CallbackAPIVersion.VERSION1
+        )
+        
         self.callbacks = {}
         self.connected = False
         
@@ -21,7 +29,7 @@ class MQTTController:
         self.client.on_message = self._on_message
         self.client.on_disconnect = self._on_disconnect
         
-        # Start in separate thread
+        # Run the MQTT loop in a separate daemon thread
         self.thread = threading.Thread(target=self._mqtt_loop, daemon=True)
     
     def start(self):
@@ -60,7 +68,7 @@ class MQTTController:
         if rc == 0:
             print("Connected to MQTT broker")
             self.connected = True
-            # Resubscribe to all topics
+            # Resubscribe to all topics after reconnect
             for topic in self.callbacks.keys():
                 self.client.subscribe(topic)
         else:
@@ -71,10 +79,10 @@ class MQTTController:
         topic = msg.topic
         try:
             payload = json.loads(msg.payload.decode())
-        except:
+        except (ValueError, json.JSONDecodeError):
             payload = msg.payload.decode()
         
-        # Call the appropriate callback function
+        # Dispatch to the registered callback
         if topic in self.callbacks:
             self.callbacks[topic](payload)
     
